@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="org.graylog2.log4j2">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSS} (%X{correlationId} - %X{contextPath} - %X{usuario} - %X{session} - %X{ip} - %X{clientId}) %c{1.} %5p - %m%n" />
+		</Console>
+		    <GELF name="gelfAppender" server="192.168.99.100" port="12201" hostName="localhost" additionalFields="foo=bar"/>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="gelfAppender" />
+		</Root>
+	</Loggers>
+</Configuration>
