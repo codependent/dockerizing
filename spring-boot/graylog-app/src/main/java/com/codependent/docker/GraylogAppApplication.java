@@ -2,6 +2,7 @@ package com.codependent.docker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,30 @@ public class GraylogAppApplication {
 	
 	@RequestMapping
 	@ResponseStatus(HttpStatus.OK)
-	public void sendLog(@RequestParam(required=false) String message){
-		if(message == null){
-			logger.info("NO MESSAGE");
-		}else{
+	public void sendLog(@RequestParam(required=false) String message, @RequestParam(required=false) Level level){
+		message = message != null ? message : "NO MESSAGE";
+		if(level == null){
 			logger.info(message);
+		}else{
+			switch(level){
+			case TRACE:
+				logger.trace(message);
+				break;
+			case DEBUG:
+				logger.debug(message);
+				break;
+			case INFO:
+				logger.info(message);
+				break;
+			case WARN:
+				logger.warn(message);
+				break;
+			case ERROR:
+				logger.error(message);
+				break;
+			default:
+				logger.info(message);
+			}
 		}
 	}
 	
